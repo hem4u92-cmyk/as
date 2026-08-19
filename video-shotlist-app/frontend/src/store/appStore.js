@@ -18,6 +18,8 @@ export const useAppStore = create((set, get) => ({
     temperature: 0.7,
     custom_api_key: '',
     custom_api_base: '',
+    whisper_api_key: '',
+    whisper_api_base: '',
   },
   
   // Prompts
