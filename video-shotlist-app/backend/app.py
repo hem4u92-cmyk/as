@@ -46,8 +46,12 @@ class ModelConfig(BaseModel):
     vision_model: str = "gpt-4o-mini"
     shotlist_model: str = "gpt-4o"
     temperature: float = 0.7
+    # Unified API key for Vision and Shotlist (OpenAI-compatible)
     custom_api_key: Optional[str] = None
     custom_api_base: Optional[str] = None
+    # Separate API key and base for Whisper (custom server)
+    whisper_api_key: Optional[str] = None
+    whisper_api_base: Optional[str] = None
 
 
 class PromptConfig(BaseModel):
@@ -152,8 +156,8 @@ async def process_video(
         transcription = await whisper_service.transcribe(
             audio_path,
             model=model_config.transcription_model,
-            api_key=model_config.custom_api_key,
-            api_base=model_config.custom_api_base,
+            api_key=model_config.whisper_api_key or model_config.custom_api_key,
+            api_base=model_config.whisper_api_base or model_config.custom_api_base,
             system_prompt=prompt_config.transcription_system if prompt_config else None,
             user_prompt=prompt_config.transcription_user if prompt_config else None,
         )
